@@ -59,12 +59,5 @@ async def get_tokens_count(text: str, model: Model) -> int:
     if model == Model.GPT_4O_MINI:
         encoding = tiktoken.encoding_for_model(model.value)
         result = len(encoding.encode(text))
-    # elif model == Model.DEEPSEEK_V3:  #  Being developed
-    #     chat_tokenizer_dir = "./"
-    #     tokenizer = transformers.AutoTokenizer.from_pretrained(
-    #         chat_tokenizer_dir,
-    #         trust_remote_code=True
-    #     )
-    #     result = len(tokenizer.encode(text))
 
     return result
