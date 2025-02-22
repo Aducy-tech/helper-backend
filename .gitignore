@@ -1,0 +1,43 @@
+# Environment and secrets
+.env
+certs/
+.git/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+myenv/
+env/
+.env/
+.venv/
+ENV/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
+.cache
+coverage.xml
+*.cover
+.pytest_cache/
+
+# Development files in progress
+src/utils/ai/tokenizer.json
+src/utils/ai/tokenizer_config.json
+tests
+
+# Logs
+*.log
+logs/
