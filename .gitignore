@@ -33,9 +33,6 @@ coverage.xml
 *.cover
 .pytest_cache/
 
-# Development files in progress
-tests
-
 # Logs
 *.log
 logs/
