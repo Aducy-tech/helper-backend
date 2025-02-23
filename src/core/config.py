@@ -1,20 +1,19 @@
-import os
 from typing import List
 from pathlib import Path
-from pydantic import BaseModel
-from dotenv import load_dotenv
+from pydantic import BaseModel, Field
+from pydantic_settings import BaseSettings
 
-
-load_dotenv()
 
 BASE_DIR = Path(__file__).parent.parent.parent
 
 
-class Cors(BaseModel):
-    allowed_origins: List[str] = os.getenv(
-        "ALLOWED_ORIGINS",
-        ""
-    ).split(",")
+class Cors(BaseSettings):
+    model_config = {
+        'env_file': '.env',
+        'extra': 'ignore'
+    }
+
+    allowed_origins_str: str = Field(alias='ALLOWED_ORIGINS')
     allow_credentials: bool = True
     allowed_methods: List[str] = [
         "GET",
@@ -32,20 +31,30 @@ class Cors(BaseModel):
         "X-Requested-With"
     ]
 
+    @property
+    def allowed_origins(self) -> List[str]:
+        if ',' in self.allowed_origins_str:
+            return self.allowed_origins_str.split(',')
+        return [self.allowed_origins_str]
 
-class DatabaseSettings(BaseModel):
-    db_user: str = os.getenv("POSTGRES_USER")
-    db_password: str = os.getenv("POSTGRES_PASSWORD")
-    db_host: str = os.getenv("POSTGRES_HOST")
-    db_name: str = os.getenv("POSTGRES_DATABASE")
-    db_port: str = os.getenv("POSTGRES_PORT", "5432")
 
-    url: str = (
-        f'postgresql+asyncpg://{db_user}:{db_password}'
-        f'@{db_host}:{db_port}/{db_name}'
-    )
+class DatabaseSettings(BaseSettings):
+    postgres_port: int
+    postgres_user: str
+    postgres_password: str
+    postgres_host: str
+    postgres_database: str
 
     echo: bool = False
+
+    @property
+    def url(self) -> str:
+        return (
+            f'postgresql+asyncpg://'
+            f'{self.postgres_user}:{self.postgres_password}'
+            f'@{self.postgres_host}:{self.postgres_port}'
+            f'/{self.postgres_database}'
+        )
 
 
 class AuthJWT(BaseModel):
@@ -63,9 +72,14 @@ class AuthJWT(BaseModel):
     algorithm: str = 'RS256'
 
 
-class AI(BaseModel):
-    proxy: str = os.getenv('PROXY')
-    openai_api_key: str = os.getenv('OPENAI_API_KEY')
+class AI(BaseSettings):
+    model_config = {
+        'env_file': '.env',
+        'extra': 'ignore'
+    }
+
+    proxy: str
+    openai_api_key: str
 
     system_text_for_essay: str = """
     Ни в коем случае не используй слова, кроме русских.
