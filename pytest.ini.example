@@ -1,0 +1,19 @@
+[pytest]
+pythonpath = . src
+env = 
+    # Database settings
+    POSTGRES_USER=your_test_postgres_user
+    POSTGRES_PASSWORD=your_test_postgres_password
+    POSTGRES_DATABASE=your_test_postgres_database
+    POSTGRES_HOST=your_test_postgres_host
+    POSTGRES_PORT=your_test_postgres_port
+
+    # CORS settings
+    # Multiple values separated by commas without spaces
+    ALLOWED_ORIGINS=your_test_allowed_origins
+
+    # AI settings
+    OPENAI_API_KEY=your_test_openai_api_key
+    PROXY=your_test_proxy
+
+    MODE=TEST

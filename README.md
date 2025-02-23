@@ -4,6 +4,7 @@
 
 ### Environment Setup
 1. Fill `.env.example` file and rename it to `.env`
+2. Fill `pytest.ini.example` file and rename it to `pytest.ini`
 
 ### SSL Certificate Generation
 1. Create a `certs` directory in the project root
