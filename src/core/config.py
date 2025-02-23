@@ -1,17 +1,14 @@
 from typing import List
 from pathlib import Path
 from pydantic import BaseModel, Field
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 BASE_DIR = Path(__file__).parent.parent.parent
 
 
 class Cors(BaseSettings):
-    model_config = {
-        'env_file': '.env',
-        'extra': 'ignore'
-    }
+    model_config = SettingsConfigDict(env_file='.env', extra='ignore')
 
     allowed_origins_str: str = Field(alias='ALLOWED_ORIGINS')
     allow_credentials: bool = True
@@ -39,11 +36,15 @@ class Cors(BaseSettings):
 
 
 class DatabaseSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_file='.env', extra='ignore')
+
     postgres_port: int
     postgres_user: str
     postgres_password: str
     postgres_host: str
     postgres_database: str
+
+    MODE: str
 
     echo: bool = False
 
@@ -73,10 +74,7 @@ class AuthJWT(BaseModel):
 
 
 class AI(BaseSettings):
-    model_config = {
-        'env_file': '.env',
-        'extra': 'ignore'
-    }
+    model_config = SettingsConfigDict(env_file='.env', extra='ignore')
 
     proxy: str
     openai_api_key: str
@@ -91,7 +89,9 @@ class AI(BaseSettings):
     min_tokens_for_ai: int = 500
 
 
-class Settings(BaseModel):
+class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file='.env', extra='ignore')
+
     auth_jwt: AuthJWT = AuthJWT()
     database_settings: DatabaseSettings = DatabaseSettings()
     ai: AI = AI()
